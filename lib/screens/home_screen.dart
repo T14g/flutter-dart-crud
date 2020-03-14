@@ -29,10 +29,11 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Text('Cancelar')
         ),
         FlatButton(
-          onPressed: (){
+          onPressed: () async{
             _register.alfanumerico = _fieldAlphanumeric.text;
             _register.numero       = _fieldNumber.text;
-            _registerService.saveRegister(_register);
+            var result = await _registerService.saveRegister(_register);
+            print(result);
           },
           child: Text('Salvar')
         )
