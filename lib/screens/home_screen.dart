@@ -17,6 +17,27 @@ class _HomeScreenState extends State<HomeScreen> {
   var _register = Register();
   var _registerService = RegisterService();
 
+  List<Register> _registerList = List<Register>();
+
+  @override
+  void initState() {
+    super.initState();
+    getAllRegisters();
+  }
+
+  getAllRegisters() async {
+    var registers = await _registerService.getRegisters();
+    registers.forEach((register){
+      setState(() {
+         var model = Register();
+        model.alfanumerico = register['alfanumerico'];
+        _registerList.add(model);
+      });
+    });
+  }
+
+  
+
 
   //Add Dialog, _ = private
   _showFormDialog(BuildContext context){
@@ -33,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
             _register.alfanumerico = _fieldAlphanumeric.text;
             _register.numero       = _fieldNumber.text;
             var result = await _registerService.saveRegister(_register);
+            getAllRegisters();
             print(result);
           },
           child: Text('Salvar')
@@ -57,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           ]
         )
-      ),
+      ), 
       );
     });
   }
@@ -68,8 +90,20 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text("Crud By T14g"),
       ),
-      body: Center(
-        child: Text("Bem vindo!"),
+      body: ListView.builder(
+        itemCount: _registerList.length,
+        itemBuilder: (context,index){
+          return Card(
+            child: ListTile( 
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(_registerList[index].alfanumerico ?? 'Not filled')
+                ],
+                )
+            )
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(onPressed: (){
         _showFormDialog(context);

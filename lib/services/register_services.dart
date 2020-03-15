@@ -12,4 +12,8 @@ class RegisterService {
   saveRegister(Register register) async{
     return await _repository.save('registers', register.registerMap());
   }
+
+  getRegisters() async {
+    return await _repository.getAll('registers');
+  }
 }
