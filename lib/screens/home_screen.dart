@@ -36,6 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  getById(BuildContext context, id) async {
+    var registers =_registerService.getRegisterById(id);
+  }
+
   
 
 
@@ -95,12 +99,15 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context,index){
           return Card(
             child: ListTile( 
+              leading: IconButton(icon: Icon(Icons.info), onPressed: (){}),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(_registerList[index].alfanumerico ?? 'Not filled')
+                  Text(_registerList[index].alfanumerico ?? 'Not filled'),
+                  IconButton(icon: Icon(Icons.edit), onPressed: (){}),
                 ],
-                )
+                ),
+                trailing: IconButton(icon: Icon(Icons.delete), onPressed: (){},),
             )
           );
         },
@@ -111,3 +118,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+

@@ -16,4 +16,8 @@ class RegisterService {
   getRegisters() async {
     return await _repository.getAll('registers');
   }
+
+   getRegisterById(id) async{
+     return await _repository.getById('registers', id);
+  }
 }
