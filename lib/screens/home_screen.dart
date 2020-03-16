@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:projeto/models/register.dart';
 import 'package:projeto/services/register_services.dart';
+import 'package:intl/intl.dart';
+
+
+// Texto alfanumérico
+// Campo número inteiro
+// Campo Moeda float/double + R$
+// DATA
+// SELEÇÃO VALORES VALIDOS
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -9,15 +17,35 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  // Select values 
+  
+
   //Controllers
   var _fieldAlphanumeric = TextEditingController();
   var _fieldNumber = TextEditingController();
+  var _fieldDate = TextEditingController();
+  var _selectOptions = List<DropdownMenuItem>();
+  var _fieldSelect ;
+
+  DateTime _date = DateTime.now();
+
+  //Method for getting the calendar
+  _selectDate(BuildContext context) async {
+    var _pickedDate = await showDatePicker(context: context, initialDate: _date, firstDate: DateTime(2000), lastDate: DateTime(2099));
+    if(_pickedDate != null){
+      setState(() {
+        _date = _pickedDate;
+        _fieldDate.text = DateFormat('dd-MM-YYYY').format(_pickedDate); 
+      });
+    }
+  }
 
   //Models
   var _register = Register();
   var _registerService = RegisterService();
 
   List<Register> _registerList = List<Register>();
+
 
   @override
   void initState() {
@@ -80,6 +108,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 labelText: 'Campo Número'
               ),
             ),
+            // TextField(
+            //   controller: _fieldDate,
+            //   decoration: InputDecoration(
+            //     labelText: 'Data',
+            //     prefixIcon: InkWell(onTap: (){
+            //       _selectDate(context);
+            //     }),
+            //   ),
+            // ),
+            DropdownButtonFormField(
+              value: _fieldSelect,
+              items: [
+                DropdownMenuItem(child: Text('Casa'), value: Text('Casa')),
+                DropdownMenuItem(child: Text('Carro'), value: Text('Carro')),
+                DropdownMenuItem(child: Text('BMW'), value: Text('BMW')),
+              ],
+              hint: Text('Selecione uma opção!'),
+              onChanged: (value){
+                setState(() {
+                  _fieldSelect = value;
+                });
+              },
+            )
 
           ]
         )
