@@ -78,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
       actions: <Widget>[
         FlatButton(
           onPressed: (){
+            Navigator.pop(context);
           },
           child: Text('Cancelar')
         ),
@@ -88,6 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
             var result = await _registerService.saveRegister(_register);
             getAllRegisters();
             print(result);
+            Navigator.pop(context);
           },
           child: Text('Salvar')
         )
