@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if(_pickedDate != null){
       setState(() {
         _date = _pickedDate;
-        _fieldDate.text = DateFormat('dd-MM-YYYY').format(_pickedDate); 
+        _fieldDate.text = DateFormat('dd-MM-yyyy').format(_pickedDate); 
       });
     }
   }
@@ -108,25 +108,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 labelText: 'Campo Número'
               ),
             ),
-            // TextField(
-            //   controller: _fieldDate,
-            //   decoration: InputDecoration(
-            //     labelText: 'Data',
-            //     prefixIcon: InkWell(onTap: (){
-            //       _selectDate(context);
-            //     }),
-            //   ),
-            // ),
+            TextField(
+              controller: _fieldDate,
+              decoration: InputDecoration(
+                labelText: 'dd-MM-yyyy',
+                prefixIcon: InkWell(onTap: (){
+                  _selectDate(context);
+                },child: Icon(Icons.calendar_today)) 
+              ),
+            ),
             DropdownButtonFormField(
               value: _fieldSelect,
               items: [
-                DropdownMenuItem(child: Text('Casa'), value: Text('Casa')),
-                DropdownMenuItem(child: Text('Carro'), value: Text('Carro')),
-                DropdownMenuItem(child: Text('BMW'), value: Text('BMW')),
+                DropdownMenuItem(child: Text('Casa'), value: 'Casa'),
+                DropdownMenuItem(child: Text('Carro'), value: 'Carro'),
+                DropdownMenuItem(child: Text('BMW'), value: 'BMW'),
               ],
               hint: Text('Selecione uma opção!'),
               onChanged: (value){
                 setState(() {
+                  print(value);
                   _fieldSelect = value;
                 });
               },
