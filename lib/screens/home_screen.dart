@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:projeto/models/register.dart';
 import 'package:projeto/services/register_services.dart';
+import 'package:projeto/services/currency_format.dart';
 import 'package:intl/intl.dart';
 
 
@@ -17,12 +19,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  // Select values 
+  //R$ currency format
+  var _formatBR = CurrencyPtBrInputFormatter();
   
 
   //Controllers
   var _fieldAlphanumeric = TextEditingController();
   var _fieldNumber = TextEditingController();
+  var _fieldNumberFloat = TextEditingController();
   var _fieldDate = TextEditingController();
   var _selectOptions = List<DropdownMenuItem>();
   var _fieldSelect ;
@@ -107,8 +111,20 @@ class _HomeScreenState extends State<HomeScreen> {
             TextField(
               controller: _fieldNumber,
               decoration: InputDecoration(
-                labelText: 'Campo Número'
+                labelText: 'Campo Número inteiro'
               ),
+              keyboardType: TextInputType.number
+            ),
+             TextField(
+              controller: _fieldNumberFloat,
+              decoration: InputDecoration(
+                labelText: 'Campo Número Float'
+              ),
+              keyboardType: TextInputType.numberWithOptions(),
+              inputFormatters:[
+                WhitelistingTextInputFormatter.digitsOnly,
+                _formatBR
+                ],
             ),
             TextField(
               controller: _fieldDate,
