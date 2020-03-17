@@ -24,12 +24,12 @@ class _HomeScreenState extends State<HomeScreen> {
   
 
   //Controllers
-  var _fieldAlphanumeric = TextEditingController();
-  var _fieldNumber = TextEditingController();
-  var _fieldNumberFloat = TextEditingController();
-  var _fieldDate = TextEditingController();
+  var _alfanumerico = TextEditingController();
+  var _inteiro = TextEditingController();
+  var _decimal = TextEditingController();
+  var _dia = TextEditingController();
   var _selectOptions = List<DropdownMenuItem>();
-  var _fieldSelect ;
+  var _selecionado ;
 
   DateTime _date = DateTime.now();
 
@@ -39,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if(_pickedDate != null){
       setState(() {
         _date = _pickedDate;
-        _fieldDate.text = DateFormat('dd-MM-yyyy').format(_pickedDate); 
+        _dia.text = DateFormat('dd-MM-yyyy').format(_pickedDate); 
       });
     }
   }
@@ -88,8 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         FlatButton(
           onPressed: () async{
-            _register.alfanumerico = _fieldAlphanumeric.text;
-            _register.numero       = _fieldNumber.text;
+            _register.alfanumerico = _alfanumerico.text;
+            _register.numero       = _inteiro.text;
             var result = await _registerService.saveRegister(_register);
             getAllRegisters();
             print(result);
@@ -103,20 +103,20 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: <Widget>[
             TextField(
-              controller: _fieldAlphanumeric,
+              controller: _alfanumerico,
               decoration: InputDecoration(
                 labelText: 'Campo Alfanumérico'
               ),
             ),
             TextField(
-              controller: _fieldNumber,
+              controller: _inteiro,
               decoration: InputDecoration(
                 labelText: 'Campo Número inteiro'
               ),
               keyboardType: TextInputType.number
             ),
              TextField(
-              controller: _fieldNumberFloat,
+              controller: _decimal,
               decoration: InputDecoration(
                 labelText: 'Campo Número Float'
               ),
@@ -127,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
             ),
             TextField(
-              controller: _fieldDate,
+              controller: _dia,
               decoration: InputDecoration(
                 labelText: 'dd-MM-yyyy',
                 prefixIcon: InkWell(onTap: (){
@@ -136,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             DropdownButtonFormField(
-              value: _fieldSelect,
+              value: _selecionado,
               items: [
                 DropdownMenuItem(child: Text('Casa'), value: 'Casa'),
                 DropdownMenuItem(child: Text('Carro'), value: 'Carro'),
@@ -146,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onChanged: (value){
                 setState(() {
                   print(value);
-                  _fieldSelect = value;
+                  _selecionado = value;
                 });
               },
             )

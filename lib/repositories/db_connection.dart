@@ -13,7 +13,10 @@ class DatabaseConnection {
   }
 
   //Private _
+
+  //Fields
+  // id , alfanumerico,inteiro,decimal,dia,selecionado
   _onCreateDb(Database db, int version) async{
-    await db.execute("CREATE TABLE registers(id INTEGER PRIMARY KEY, alfanumerico TEXT, numero TEXT)");
+    await db.execute("CREATE TABLE registers(id INTEGER PRIMARY KEY, alfanumerico TEXT, inteiro INTEGER, decimal REAL, dia TEXT, selecionado Text)");
   }
 }

@@ -7,7 +7,7 @@ class Register {
     var map = Map<String, dynamic>();
     map['id'] = id;
     map['alfanumerico'] = alfanumerico;
-    map['numero'] = numero;
+    map['inteiro'] = numero;
 
     return map;
   }
