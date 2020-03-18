@@ -64,7 +64,12 @@ class _HomeScreenState extends State<HomeScreen> {
     registers.forEach((register){
       setState(() {
          var model = Register();
+         print(register);
         model.alfanumerico = register['alfanumerico'];
+        model.inteiro = register['inteiro'];
+        model.decimal = register['decimal'];
+        model.dia = register['dia'];
+        model.selecionado = register['selecionado'];
         _registerList.add(model);
       });
     });
@@ -173,17 +178,39 @@ class _HomeScreenState extends State<HomeScreen> {
         itemCount: _registerList.length,
         itemBuilder: (context,index){
           return Card(
-            child: ListTile( 
-              leading: IconButton(icon: Icon(Icons.info), onPressed: (){}),
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(_registerList[index].alfanumerico ?? 'Not filled'),
-                  IconButton(icon: Icon(Icons.edit), onPressed: (){}),
-                ],
-                ),
-                trailing: IconButton(icon: Icon(Icons.delete), onPressed: (){},),
-            )
+            child: Column(
+        children: [
+          ListTile(
+            title: Text(_registerList[index].alfanumerico ?? 'Not filled')
+          ),
+           ListTile(
+            title: Text(_registerList[index].inteiro ?? 'Not filled')
+          ),
+           ListTile(
+            title: Text(_registerList[index].decimal ?? 'Not filled')
+          ),
+           ListTile(
+            title: Text(_registerList[index].dia ?? 'Not filled')
+          ),
+           ListTile(
+            title: Text(_registerList[index].selecionado ?? 'Not filled')
+          ),
+          Divider(),
+          ButtonBar(
+            children: <Widget>[
+              FlatButton(
+                child: const Text('DELETAR'),
+                onPressed: () { /* ... */ },
+              ),
+              FlatButton(
+                child: const Text('EDITAR'),
+                onPressed: () { /* ... */ },
+              ),
+            ],
+          ),
+        
+        ],
+      ),
           );
         },
       ),
