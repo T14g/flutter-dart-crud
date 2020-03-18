@@ -65,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
          var model = Register();
          print(register);
+        model.id = register['id'];
         model.alfanumerico = register['alfanumerico'];
         model.inteiro = register['inteiro'];
         model.decimal = register['decimal'];
@@ -200,7 +201,12 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               FlatButton(
                 child: const Text('DELETAR'),
-                onPressed: () { /* ... */ },
+                onPressed: () async{
+                  var id = _registerList[index].id;
+                  // print(_registerList[index].id);
+                  var result = await _registerService.deleteRegister(id);
+                  print(result);
+                 },
               ),
               FlatButton(
                 child: const Text('EDITAR'),

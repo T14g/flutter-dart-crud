@@ -20,4 +20,8 @@ class RegisterService {
    getRegisterById(id) async{
      return await _repository.getById('registers', id);
   }
+
+  deleteRegister(id) async{
+    return await _repository.delete('registers',id);
+  }
 }
