@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:projeto/models/register.dart';
@@ -89,7 +91,10 @@ class _HomeScreenState extends State<HomeScreen> {
         FlatButton(
           onPressed: () async{
             _register.alfanumerico = _alfanumerico.text;
-            _register.numero       = _inteiro.text;
+            _register.inteiro       = _inteiro.text ;
+            _register.decimal       = _decimal.text ;
+            _register.dia           = _dia.text;
+            _register.selecionado   = _selecionado;
             var result = await _registerService.saveRegister(_register);
             getAllRegisters();
             print(result);
