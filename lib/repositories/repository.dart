@@ -36,4 +36,9 @@ class Repository {
     var conn = await database;
     return await conn.rawDelete("DELETE FROM $table WHERE id = $id");
   }
+
+  update(String table, data) async {
+    var conn = await database;
+    return await conn.update(table , data, where:' id=?', whereArgs: [data['id']]);
+  }
 }

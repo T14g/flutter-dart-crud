@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:projeto/models/register.dart';
@@ -30,10 +28,17 @@ class _HomeScreenState extends State<HomeScreen> {
   var _inteiro = TextEditingController();
   var _decimal = TextEditingController();
   var _dia = TextEditingController();
-  var _selectOptions = List<DropdownMenuItem>();
   var _selecionado ;
 
   DateTime _date = DateTime.now();
+
+
+  //Edit variables
+  var _updateAlfa = TextEditingController();
+  var _updateInteiro = TextEditingController();
+  var _updateDecimal = TextEditingController();
+  var _updateDia = TextEditingController();
+  var _updateSelecionado;
 
   //Method for getting the calendar
   _selectDate(BuildContext context) async {
@@ -50,8 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
   var _register = Register();
   var _registerService = RegisterService();
 
-  List<Register> _registerList = List<Register>();
-
+  List<Register> _registerList;
 
   @override
   void initState() {
@@ -60,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   getAllRegisters() async {
+    _registerList =  List<Register>();
     var registers = await _registerService.getRegisters();
     registers.forEach((register){
       setState(() {
@@ -147,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             DropdownButtonFormField(
-              value: _selecionado,
+              value: _updateSelecionado,
               items: [
                 DropdownMenuItem(child: Text('Casa'), value: 'Casa'),
                 DropdownMenuItem(child: Text('Carro'), value: 'Carro'),
@@ -157,7 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
               onChanged: (value){
                 setState(() {
                   print(value);
-                  _selecionado = value;
+                  _updateSelecionado = value;
                 });
               },
             )
@@ -168,7 +173,110 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     });
   }
-  
+
+
+// Edit Dialog 
+_editDialog(BuildContext context, idReg){
+    return showDialog(context: context, barrierDismissible: true, builder: (param){
+      return AlertDialog(
+      actions: <Widget>[
+        FlatButton(
+          onPressed: (){
+            Navigator.pop(context);
+          },
+          child: Text('Cancelar')
+        ),
+        FlatButton(
+          onPressed: () async{
+            _register.id            = idReg;
+            _register.alfanumerico = _updateAlfa.text;
+            _register.inteiro       = _updateInteiro.text ;
+            _register.decimal       = _updateDecimal.text ;
+            _register.dia           = _updateDia.text;
+            _register.selecionado   = _updateSelecionado;
+            var result = await _registerService.updateRegister(_register);
+            getAllRegisters();
+            print(result);
+            Navigator.pop(context);
+          },
+          child: Text('Update')
+        )
+      ],  
+      title: Text('Editar registro'),
+      content: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            TextField(
+              controller: _updateAlfa,
+              decoration: InputDecoration(
+                labelText: 'Campo Alfanumérico'
+              ),
+            ),
+            TextField(
+              controller: _updateInteiro,
+              decoration: InputDecoration(
+                labelText: 'Campo Número inteiro'
+              ),
+              keyboardType: TextInputType.number
+            ),
+             TextField(
+              controller: _updateDecimal,
+              decoration: InputDecoration(
+                labelText: 'Campo Número Float'
+              ),
+              keyboardType: TextInputType.numberWithOptions(),
+              inputFormatters:[
+                WhitelistingTextInputFormatter.digitsOnly,
+                _formatBR
+                ],
+            ),
+            TextField(
+              controller: _updateDia,
+              decoration: InputDecoration(
+                labelText: 'dd-MM-yyyy',
+                prefixIcon: InkWell(onTap: (){
+                  _selectDate(context);
+                },child: Icon(Icons.calendar_today)) 
+              ),
+            ),
+            DropdownButtonFormField(
+              value: _updateSelecionado,
+              items: [
+                DropdownMenuItem(child: Text('Casa'), value: 'Casa'),
+                DropdownMenuItem(child: Text('Carro'), value: 'Carro'),
+                DropdownMenuItem(child: Text('BMW'), value: 'BMW'),
+              ],
+              hint: Text('Selecione uma opção!'),
+              onChanged: (value){
+                setState(() {
+                  print(value);
+                  _updateSelecionado = value;
+                });
+              },
+            )
+
+          ]
+        )
+      ), 
+      );
+    });
+  }
+
+  _editRegister(BuildContext context, registerId) async{
+    var registro = await _registerService.getRegisterById(registerId);
+    print(registro[0]['alfanumerico']);
+    setState((){
+        _updateAlfa.text = registro[0]['alfanumerico'];
+        _updateInteiro.text = registro[0]['inteiro'];
+        _updateDecimal.text = registro[0]['decimal'];
+        _updateDia.text = registro[0]['dia'];
+        _updateSelecionado = registro[0]['selecionado'];
+    });
+
+    _editDialog(context,registerId);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -210,7 +318,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               FlatButton(
                 child: const Text('EDITAR'),
-                onPressed: () { /* ... */ },
+                onPressed: () { 
+                  var id = _registerList[index].id;
+                  _editRegister(context, id );
+                },
               ),
             ],
           ),

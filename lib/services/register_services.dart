@@ -24,4 +24,8 @@ class RegisterService {
   deleteRegister(id) async{
     return await _repository.delete('registers',id);
   }
+
+  updateRegister(Register register) async {
+    return await _repository.update('registers', register.registerMap());
+  }
 }
